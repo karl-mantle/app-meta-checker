@@ -20,7 +20,13 @@ async function fetchImageAsBase64(url, username, password) {
   return `data:${contentType};base64,${base64}`;
 }
 
-app.use(cors()); // do better later
+const corsOptions = {
+  origin: 'https://karl-mantle.github.io',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.post("/api/meta", async (req, res) => {
