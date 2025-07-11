@@ -46,53 +46,55 @@ export default function App() {
   const twitterImgSrc = meta.twitterImageBase64 || meta.twitterImage;
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>app-meta-checker</h1>
-      <p>Check OG and Twitter meta tags.</p>
-
-      <div style={{ marginTop: "1rem" }}>
+    <>
+      <form
+        onSubmit={(e) => {
+        e.preventDefault();
+        fetchMetadata();
+      }} >
         <input
+          id="url"
           type="text"
           placeholder="https://www.something.com"
           value={url}
           onChange={e => setUrl(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem", marginBottom: "0.5rem" }}
         />
         <input
+          id="ba-username"
           type="text"
           placeholder="Basic Auth Username (optional)"
           value={username}
           onChange={e => setUsername(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem", marginBottom: "0.5rem" }}
         />
         <input
+          id="ba-password"
           type="password"
           placeholder="Basic Auth Password (optional)"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          style={{ width: "100%", padding: "0.5rem", marginBottom: "0.5rem" }}
         />
-        <button onClick={fetchMetadata} disabled={loading} style={{ padding: "0.5rem 1rem" }}>
+        <button type="submit" disabled={loading} >
           {loading ? "Loading..." : "Fetch Meta Tags"}
         </button>
-      </div>
+      </form>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
+      <section>
+        <div style={{ marginTop: "2rem" }}>
+          <h2>Preview</h2>
+          <div style={{ border: "1px dashed #ccc", padding: "1rem", marginBottom: "1rem" }}>
+            <h3>{meta.ogTitle || meta.title}</h3>
+            <p>{meta.ogDescription || meta.description}</p>
+          {ogImgSrc && <img src={ogImgSrc} alt="og:image" style={{ maxWidth: "100%" }} />}
+          </div>
 
-      <div style={{ marginTop: "2rem" }}>
-        <h2>Preview</h2>
-        <div style={{ border: "1px dashed #ccc", padding: "1rem", marginBottom: "1rem" }}>
-          <h3>{meta.ogTitle || meta.title}</h3>
-          <p>{meta.ogDescription || meta.description}</p>
-        {ogImgSrc && <img src={ogImgSrc} alt="og:image" style={{ maxWidth: "100%" }} />}
+          <div style={{ border: "1px dashed #ccc", padding: "1rem" }}>
+            <h3>{meta.twitterTitle || meta.title}</h3>
+            <p>{meta.twitterDescription || meta.description}</p>
+          {twitterImgSrc && <img src={twitterImgSrc} alt="twitter:image" style={{ maxWidth: "100%" }} />}
+          </div>
         </div>
-
-        <div style={{ border: "1px dashed #ccc", padding: "1rem" }}>
-          <h3>{meta.twitterTitle || meta.title}</h3>
-          <p>{meta.twitterDescription || meta.description}</p>
-        {twitterImgSrc && <img src={twitterImgSrc} alt="twitter:image" style={{ maxWidth: "100%" }} />}
-        </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }
