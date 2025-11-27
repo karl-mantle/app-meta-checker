@@ -9,7 +9,7 @@ const defaultPreview = {
   twitterTitle: "",
   twitterDescription: "",
   twitterImage: "",
-  favicon: ""
+  favicon: "",
 };
 
 export default function App() {
@@ -24,11 +24,14 @@ export default function App() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch("https://app-meta-checker-production-6f68.up.railway.app/api/meta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, username, password })
-      });
+      const response = await fetch(
+        "https://app-meta-checker-worker.karlmantle.workers.dev/api/meta",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, username, password }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         setMeta(data);
@@ -49,31 +52,32 @@ export default function App() {
     <>
       <form
         onSubmit={(e) => {
-        e.preventDefault();
-        fetchMetadata();
-      }} >
+          e.preventDefault();
+          fetchMetadata();
+        }}
+      >
         <input
           id="url"
           type="text"
           placeholder="https://www.something.com"
           value={url}
-          onChange={e => setUrl(e.target.value)}
+          onChange={(e) => setUrl(e.target.value)}
         />
         <input
           id="ba-username"
           type="text"
           placeholder="Basic Auth Username (optional)"
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           id="ba-password"
           type="password"
           placeholder="Basic Auth Password (optional)"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" disabled={loading} >
+        <button type="submit" disabled={loading}>
           {loading ? "Loading..." : "Fetch Meta Tags"}
         </button>
       </form>
@@ -82,16 +86,30 @@ export default function App() {
       <section>
         <div style={{ marginTop: "2rem" }}>
           <h2>Preview</h2>
-          <div style={{ border: "1px dashed #ccc", padding: "1rem", marginBottom: "1rem" }}>
+          <div
+            style={{
+              border: "1px dashed #ccc",
+              padding: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
             <h3>{meta.ogTitle || meta.title}</h3>
             <p>{meta.ogDescription || meta.description}</p>
-          {ogImgSrc && <img src={ogImgSrc} alt="og:image" style={{ maxWidth: "100%" }} />}
+            {ogImgSrc && (
+              <img src={ogImgSrc} alt="og:image" style={{ maxWidth: "100%" }} />
+            )}
           </div>
 
           <div style={{ border: "1px dashed #ccc", padding: "1rem" }}>
             <h3>{meta.twitterTitle || meta.title}</h3>
             <p>{meta.twitterDescription || meta.description}</p>
-          {twitterImgSrc && <img src={twitterImgSrc} alt="twitter:image" style={{ maxWidth: "100%" }} />}
+            {twitterImgSrc && (
+              <img
+                src={twitterImgSrc}
+                alt="twitter:image"
+                style={{ maxWidth: "100%" }}
+              />
+            )}
           </div>
         </div>
       </section>
