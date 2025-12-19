@@ -22,9 +22,16 @@ const corsHeaders = {
   "Access-Control-Allow-Credentials": "true",
 };
 
+const resolveUrl = (pageUrl, assetUrl) => {
+  try {
+    return new URL(assetUrl, pageUrl).toString();
+  } catch {
+    return null;
+  }
+};
+
 async function handleMetaRequest(request) {
-  const body = await request.json();
-  const { url, username, password } = body;
+  const { url, username, password } = await request.json();
 
   if (!url) {
     return new Response(JSON.stringify({ error: "Forbidden" }), {
@@ -33,9 +40,12 @@ async function handleMetaRequest(request) {
     });
   }
 
-  const headers = {};
+  const headers = {
+    "User-Agent": "MetaPreviewBot/1.0",
+  };
+
   if (username && password) {
-    headers["Authorization"] = "Basic " + btoa(`${username}:${password}`);
+    headers.Authorization = "Basic " + btoa(`${username}:${password}`);
   }
 
   try {
@@ -89,6 +99,18 @@ async function handleMetaRequest(request) {
 
     await rewriter.transform(new Response(html)).text();
 
+    metadata.ogImage = metadata.ogImage
+      ? resolveUrl(url, metadata.ogImage)
+      : null;
+
+    metadata.twitterImage = metadata.twitterImage
+      ? resolveUrl(url, metadata.twitterImage)
+      : null;
+
+    metadata.favicon = metadata.favicon
+      ? resolveUrl(url, metadata.favicon)
+      : null;
+
     if (metadata.ogImage) {
       metadata.ogImageBase64 = await fetchImageAsBase64(
         metadata.ogImage,
@@ -125,17 +147,28 @@ async function handleMetaRequest(request) {
 
 async function fetchImageAsBase64(url, headers) {
   try {
-    const response = await fetch(url, { headers });
+    const response = await fetch(url, {
+      headers,
+      cf: { cacheTtl: 3600 },
+    });
 
-    const arrayBuffer = await response.arrayBuffer();
-    const bytes = new Uint8Array(arrayBuffer);
-
-    const binary = String.fromCharCode(...bytes);
-    const base64 = btoa(binary);
+    if (!response.ok) return null;
 
     const contentType = response.headers.get("content-type") || "image/jpeg";
 
-    return `data:${contentType};base64,${base64}`;
+    const buffer = await response.arrayBuffer();
+
+    if (buffer.byteLength > 2_000_000) return null;
+
+    const bytes = new Uint8Array(buffer);
+    let binary = "";
+    const chunkSize = 0x8000;
+
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+    }
+
+    return `data:${contentType};base64,${btoa(binary)}`;
   } catch {
     return null;
   }
