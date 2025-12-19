@@ -1,4 +1,4 @@
-{  
+{
   "homepage": "https://karlmantle.github.io/app-meta-checker",
   "name": "app-meta-checker-frontend",
   "private": true,
@@ -15,7 +15,8 @@
   "dependencies": {
     "gh-pages": "^6.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-tabs": "^6.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

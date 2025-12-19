@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import DefaultPreview from "./components/DefaultPreview";
 
 const defaultPreview = {
   title: "",
@@ -45,9 +47,6 @@ export default function App() {
     }
   };
 
-  const ogImgSrc = meta.ogImageBase64 || meta.ogImage;
-  const twitterImgSrc = meta.twitterImageBase64 || meta.twitterImage;
-
   return (
     <>
       <form
@@ -64,14 +63,14 @@ export default function App() {
           onChange={(e) => setUrl(e.target.value)}
         />
         <input
-          id="ba-username"
+          id="username"
           type="text"
           placeholder="Basic Auth Username (optional)"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
-          id="ba-password"
+          id="password"
           type="password"
           placeholder="Basic Auth Password (optional)"
           value={password}
@@ -83,35 +82,26 @@ export default function App() {
       </form>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <section>
-        <div style={{ marginTop: "2rem" }}>
-          <h2>Preview</h2>
-          <div
-            style={{
-              border: "1px dashed #ccc",
-              padding: "1rem",
-              marginBottom: "1rem",
-            }}
-          >
-            <h3>{meta.ogTitle || meta.title}</h3>
-            <p>{meta.ogDescription || meta.description}</p>
-            {ogImgSrc && (
-              <img src={ogImgSrc} alt="og:image" style={{ maxWidth: "100%" }} />
-            )}
-          </div>
 
-          <div style={{ border: "1px dashed #ccc", padding: "1rem" }}>
-            <h3>{meta.twitterTitle || meta.title}</h3>
-            <p>{meta.twitterDescription || meta.description}</p>
-            {twitterImgSrc && (
-              <img
-                src={twitterImgSrc}
-                alt="twitter:image"
-                style={{ maxWidth: "100%" }}
-              />
-            )}
-          </div>
-        </div>
+      <section>
+        <h2>Preview</h2>
+        <Tabs>
+          <TabList>
+            <Tab>Default</Tab>
+            <Tab>Facebook</Tab>
+            <Tab>WhatsApp</Tab>
+          </TabList>
+
+          <TabPanel>
+            <DefaultPreview meta={meta} />
+          </TabPanel>
+          <TabPanel>
+            <h2>Facebook</h2>
+          </TabPanel>
+          <TabPanel>
+            <h2>WhatsApp</h2>
+          </TabPanel>
+        </Tabs>
       </section>
     </>
   );
