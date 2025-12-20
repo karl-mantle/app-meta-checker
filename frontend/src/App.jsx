@@ -25,6 +25,7 @@ export default function App() {
   const [meta, setMeta] = useState(defaultPreview);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   const fetchMetadata = async () => {
     setLoading(true);
@@ -48,6 +49,7 @@ export default function App() {
       setError("Error: " + err.message);
     } finally {
       setLoading(false);
+      setPreview(true);
     }
   };
 
@@ -87,34 +89,36 @@ export default function App() {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <section>
-        <h2>Preview</h2>
-        <Tabs>
-          <TabList>
-            <Tab>Data</Tab>
-            <Tab>Facebook</Tab>
-            <Tab>Outlook</Tab>
-            <Tab>Teams</Tab>
-            <Tab>WhatsApp</Tab>
-          </TabList>
+      {preview === true && (
+        <section>
+          <h2>Preview</h2>
+          <Tabs>
+            <TabList>
+              <Tab>Data</Tab>
+              <Tab>Facebook</Tab>
+              <Tab>Outlook</Tab>
+              <Tab>Teams</Tab>
+              <Tab>WhatsApp</Tab>
+            </TabList>
 
-          <TabPanel>
-            <Data meta={meta} url={url} />
-          </TabPanel>
-          <TabPanel>
-            <Facebook meta={meta} url={url} />
-          </TabPanel>
-          <TabPanel>
-            <Outlook meta={meta} url={url} />
-          </TabPanel>
-          <TabPanel>
-            <Teams meta={meta} url={url} />
-          </TabPanel>
-          <TabPanel>
-            <WhatsApp meta={meta} url={url} />
-          </TabPanel>
-        </Tabs>
-      </section>
+            <TabPanel>
+              <Data meta={meta} url={url} />
+            </TabPanel>
+            <TabPanel>
+              <Facebook meta={meta} url={url} />
+            </TabPanel>
+            <TabPanel>
+              <Outlook meta={meta} url={url} />
+            </TabPanel>
+            <TabPanel>
+              <Teams meta={meta} url={url} />
+            </TabPanel>
+            <TabPanel>
+              <WhatsApp meta={meta} url={url} />
+            </TabPanel>
+          </Tabs>
+        </section>
+      )}
     </>
   );
 }
