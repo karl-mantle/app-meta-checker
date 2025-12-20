@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import DefaultPreview from "./components/DefaultPreview";
+import Data from "./components/Data.jsx";
+import Facebook from "./components/Facebook.jsx";
+import Outlook from "./components/Outlook.jsx";
+import Teams from "./components/Teams.jsx";
+import WhatsApp from "./components/WhatsApp.jsx";
 
 const defaultPreview = {
   title: "",
@@ -87,19 +91,27 @@ export default function App() {
         <h2>Preview</h2>
         <Tabs>
           <TabList>
-            <Tab>Default</Tab>
+            <Tab>Data</Tab>
             <Tab>Facebook</Tab>
+            <Tab>Outlook</Tab>
+            <Tab>Teams</Tab>
             <Tab>WhatsApp</Tab>
           </TabList>
 
           <TabPanel>
-            <DefaultPreview meta={meta} />
+            <Data meta={meta} />
           </TabPanel>
           <TabPanel>
-            <h2>Facebook</h2>
+            <Facebook meta={meta} />
           </TabPanel>
           <TabPanel>
-            <h2>WhatsApp</h2>
+            <Outlook meta={meta} />
+          </TabPanel>
+          <TabPanel>
+            <Teams meta={meta} />
+          </TabPanel>
+          <TabPanel>
+            <WhatsApp meta={meta} />
           </TabPanel>
         </Tabs>
       </section>
