@@ -1,4 +1,4 @@
-export function resolveSiteName(url) {
+export const resolveSiteName = (url) => {
   if (!url) return "";
 
   try {
@@ -10,4 +10,4 @@ export function resolveSiteName(url) {
   } catch {
     return "";
   }
-}
+};
