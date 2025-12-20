@@ -99,19 +99,19 @@ export default function App() {
           </TabList>
 
           <TabPanel>
-            <Data meta={meta} />
+            <Data meta={meta} url={url} />
           </TabPanel>
           <TabPanel>
-            <Facebook meta={meta} />
+            <Facebook meta={meta} url={url} />
           </TabPanel>
           <TabPanel>
-            <Outlook meta={meta} />
+            <Outlook meta={meta} url={url} />
           </TabPanel>
           <TabPanel>
-            <Teams meta={meta} />
+            <Teams meta={meta} url={url} />
           </TabPanel>
           <TabPanel>
-            <WhatsApp meta={meta} />
+            <WhatsApp meta={meta} url={url} />
           </TabPanel>
         </Tabs>
       </section>

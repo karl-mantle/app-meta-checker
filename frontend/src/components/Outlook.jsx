@@ -1,7 +1,8 @@
 import { normaliseMeta } from "../lib/normaliseMeta";
+import { resolveSiteName } from "../lib/resolveSiteName";
 
-export default function Outlook({ meta }) {
-  const { title, description, image, url } = normaliseMeta(meta);
+export default function Outlook({ meta, url }) {
+  const { title, description, image } = normaliseMeta(meta);
 
   return (
     <div
@@ -25,7 +26,9 @@ export default function Outlook({ meta }) {
           <div style={{ fontSize: 13, color: "#333", margin: "6px 0" }}>
             {description}
           </div>
-          <div style={{ fontSize: 12, color: "#0078d4" }}>{url}</div>
+          <div style={{ fontSize: 12, color: "#0078d4" }}>
+            {resolveSiteName(url)}
+          </div>
         </div>
       </div>
     </div>

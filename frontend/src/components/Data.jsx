@@ -1,4 +1,5 @@
 import { normaliseMeta } from "../lib/normaliseMeta";
+import { resolveSiteName } from "../lib/resolveSiteName";
 
 const sectionStyle = {
   border: "1px solid #ddd",
@@ -43,7 +44,7 @@ const imageStyle = {
   border: "1px solid #ccc",
 };
 
-export default function Data({ meta }) {
+export default function Data({ meta, url }) {
   const {
     title,
     description,
@@ -51,8 +52,6 @@ export default function Data({ meta }) {
     twitterTitle,
     twitterDescription,
     twitterImage,
-    siteName,
-    url,
   } = normaliseMeta(meta);
 
   const Row = ({ label, value }) => (
@@ -71,11 +70,11 @@ export default function Data({ meta }) {
         <h3 style={sectionTitle}>Open Graph (normalized)</h3>
         <table style={tableStyle}>
           <tbody>
-            <Row label="og:title → title" value={title} />
-            <Row label="og:description → description" value={description} />
+            <Row label="og:title" value={title} />
+            <Row label="og:description" value={description} />
             <Row label="og:image" value={image} />
             <Row label="og:url" value={url} />
-            <Row label="og:site_name" value={siteName} />
+            <Row label="domain" value={resolveSiteName(url)} />
           </tbody>
         </table>
 

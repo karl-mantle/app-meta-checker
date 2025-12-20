@@ -1,7 +1,8 @@
 import { normaliseMeta } from "../lib/normaliseMeta";
+import { resolveSiteName } from "../lib/resolveSiteName";
 
-export default function WhatsApp({ meta }) {
-  const { title, description, image, url } = normaliseMeta(meta);
+export default function WhatsApp({ meta, url }) {
+  const { title, description, image } = normaliseMeta(meta);
 
   return (
     <div
@@ -22,7 +23,9 @@ export default function WhatsApp({ meta }) {
       <div style={{ padding: 10 }}>
         <div style={{ fontWeight: 600 }}>{title}</div>
         <div style={{ fontSize: 13, color: "#555" }}>{description}</div>
-        <div style={{ fontSize: 12, color: "#999" }}>{url}</div>
+        <div style={{ fontSize: 12, color: "#999" }}>
+          {resolveSiteName(url)}
+        </div>
       </div>
     </div>
   );
