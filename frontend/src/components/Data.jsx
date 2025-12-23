@@ -67,7 +67,15 @@ export default function Data({ meta, url }) {
     <div style={{ marginTop: "2rem", fontFamily: "monospace" }}>
       {/* Open Graph */}
       <section style={sectionStyle}>
-        <h3 style={sectionTitle}>Open Graph (normalized)</h3>
+        <h3 style={sectionTitle}>Open Graph</h3>
+
+        {image && (
+          <div style={imageBlock}>
+            <div style={imageLabel}>Resolved og:image</div>
+            <img src={image} alt="og:image" style={imageStyle} />
+          </div>
+        )}
+
         <table style={tableStyle}>
           <tbody>
             <Row label="og:title" value={title} />
@@ -77,25 +85,11 @@ export default function Data({ meta, url }) {
             <Row label="domain" value={resolveSiteName(url)} />
           </tbody>
         </table>
-
-        {image && (
-          <div style={imageBlock}>
-            <div style={imageLabel}>Resolved og:image</div>
-            <img src={image} alt="og:image" style={imageStyle} />
-          </div>
-        )}
       </section>
 
       {/* Twitter */}
       <section style={sectionStyle}>
-        <h3 style={sectionTitle}>Twitter Card (normalized)</h3>
-        <table style={tableStyle}>
-          <tbody>
-            <Row label="twitter:title" value={twitterTitle} />
-            <Row label="twitter:description" value={twitterDescription} />
-            <Row label="twitter:image" value={twitterImage} />
-          </tbody>
-        </table>
+        <h3 style={sectionTitle}>Twitter Card</h3>
 
         {twitterImage && (
           <div style={imageBlock}>
@@ -103,6 +97,14 @@ export default function Data({ meta, url }) {
             <img src={twitterImage} alt="twitter:image" style={imageStyle} />
           </div>
         )}
+
+        <table style={tableStyle}>
+          <tbody>
+            <Row label="twitter:title" value={twitterTitle} />
+            <Row label="twitter:description" value={twitterDescription} />
+            <Row label="twitter:image" value={twitterImage} />
+          </tbody>
+        </table>
       </section>
     </div>
   );
