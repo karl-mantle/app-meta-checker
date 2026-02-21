@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { normaliseMeta } from "../lib/normaliseMeta";
 import { resolveSiteName } from "../lib/resolveSiteName";
 
@@ -44,6 +45,36 @@ const imageStyle = {
   border: "1px solid #ccc",
 };
 
+function TruncatedValue({ text, limit = 160 }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!text) return <span style={{ color: "#c00" }}>missing</span>;
+
+  const isLong = text.length > limit;
+  const displayText = expanded
+    ? text
+    : text.slice(0, limit) + (isLong ? "…" : "");
+
+  return (
+    <span>
+      {displayText}
+      {isLong && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{
+            marginLeft: "8px",
+            fontSize: "11px",
+            padding: "2px 4px",
+            cursor: "pointer",
+          }}
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </span>
+  );
+}
+
 export default function Data({ meta, url }) {
   const {
     title,
@@ -58,7 +89,8 @@ export default function Data({ meta, url }) {
     <tr>
       <td style={cellLabel}>{label}</td>
       <td style={cellValue}>
-        {value ? value : <span style={{ color: "#c00" }}>missing</span>}
+        {" "}
+        <TruncatedValue text={value} />{" "}
       </td>
     </tr>
   );
